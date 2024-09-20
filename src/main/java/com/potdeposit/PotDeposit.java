@@ -1,14 +1,12 @@
 package com.potdeposit;
 
-import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ClientTick;
-import net.runelite.api.events.GameStateChanged;
+import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
-import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
@@ -17,24 +15,26 @@ import java.util.Arrays;
 
 @Slf4j
 @PluginDescriptor(
-	name = "PotDeposit"
+	name = "ToA Potion Deposit"
 )
 public class PotDeposit extends Plugin
 {
 	@Inject
 	private Client client;
 
-	final int NEXUSROOM = 13454;
+	final int NEXUSROOM = 14160;
 
 	// ~~stole from~~ inspired by https://github.com/mad-s/easy-unnote/blob/main/src/main/java/easyunnote/EasyUnnotePlugin.java
 	// ~~stole from~~ inspired by https://github.com/oohwooh/no-use-players/blob/master/src/main/java/com/oohwooh/NoUsePlayerPlugin.java
 
 	@Subscribe
-	public void onClientTick(ClientTick clientTick)
+	public void onGameTick(GameTick gameTick)
 	{
 		// The menu is not rebuilt when it is open, so don't swap or else it will
 		// repeatedly swap entries
-		if (client.getLocalPlayer().getWorldLocation().getRegionID() != NEXUSROOM) {
+		final LocalPoint lp = client.getLocalPlayer().getLocalLocation();
+
+		if (WorldPoint.fromLocalInstance(client, lp).getRegionID() != NEXUSROOM) {
 			return;
 		}
 		if (client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen()) {
