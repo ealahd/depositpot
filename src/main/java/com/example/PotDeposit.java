@@ -14,9 +14,9 @@ import net.runelite.client.plugins.PluginDescriptor;
 
 @Slf4j
 @PluginDescriptor(
-	name = "Example"
+	name = "PotDeposit"
 )
-public class ExamplePlugin extends Plugin
+public class PotDeposit extends Plugin
 {
 	@Inject
 	private Client client;
