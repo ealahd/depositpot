@@ -3,10 +3,7 @@ package com.potdeposit;
 import com.google.inject.Provides;
 import javax.inject.Inject;
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.ChatMessageType;
-import net.runelite.api.Client;
-import net.runelite.api.GameState;
-import net.runelite.api.MenuEntry;
+import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameStateChanged;
@@ -27,10 +24,7 @@ public class PotDeposit extends Plugin
 	@Inject
 	private Client client;
 
-	final int NEXUSROOM = 14160;
-
-	@Inject
-	private PotDepositConfig config;
+	final int NEXUSROOM = 13454;
 
 	// ~~stole from~~ inspired by https://github.com/mad-s/easy-unnote/blob/main/src/main/java/easyunnote/EasyUnnotePlugin.java
 	// ~~stole from~~ inspired by https://github.com/oohwooh/no-use-players/blob/master/src/main/java/com/oohwooh/NoUsePlayerPlugin.java
@@ -69,11 +63,5 @@ public class PotDeposit extends Plugin
 				.toArray(MenuEntry[]::new);
 
 		client.setMenuEntries(newEntries);
-	}
-
-	@Provides
-	PotDepositConfig provideConfig(ConfigManager configManager)
-	{
-		return configManager.getConfig(PotDepositConfig.class);
 	}
 }
