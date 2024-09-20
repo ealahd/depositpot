@@ -1,4 +1,4 @@
-package com.example;
+package com.potdeposit;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -22,7 +22,7 @@ public class PotDeposit extends Plugin
 	private Client client;
 
 	@Inject
-	private ExampleConfig config;
+	private PotDepositConfig config;
 
 	@Override
 	protected void startUp() throws Exception
@@ -46,8 +46,8 @@ public class PotDeposit extends Plugin
 	}
 
 	@Provides
-	ExampleConfig provideConfig(ConfigManager configManager)
+	PotDepositConfig provideConfig(ConfigManager configManager)
 	{
-		return configManager.getConfig(ExampleConfig.class);
+		return configManager.getConfig(PotDepositConfig.class);
 	}
 }
