@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.GameTick;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.eventbus.Subscribe;
@@ -28,15 +29,25 @@ public class PotDeposit extends Plugin
 	// ~~stole from~~ inspired by https://github.com/oohwooh/no-use-players/blob/master/src/main/java/com/oohwooh/NoUsePlayerPlugin.java
 
 	@Subscribe
-	public void onGameTick(GameTick gameTick)
+	public void onClientTick(ClientTick clientTick)
 	{
 		// The menu is not rebuilt when it is open, so don't swap or else it will
 		// repeatedly swap entries
-		final LocalPoint lp = client.getLocalPlayer().getLocalLocation();
 
-		if (WorldPoint.fromLocalInstance(client, lp).getRegionID() != NEXUSROOM) {
-			return;
+		//This one we stole from the ToA plugin by https://github.com/LlemonDuck/tombs-of-amascut/blob/main/src/main/java/com/duckblade/osrs/toa/util/RaidStateTracker.java
+		final LocalPoint lp = client.getLocalPlayer().getLocalLocation();
+		if (lp == null) {
+			return; // Player's location is not available
 		}
+
+// Convert the LocalPoint directly to WorldPoint and check region
+		final int regionID = WorldPoint.fromLocalInstance(client, lp).getRegionID();
+
+		if (regionID != NEXUSROOM) {
+			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Current region ID: " + WorldPoint.fromLocalInstance(client, lp).getRegionID(), null);
+			return; // The player is not in the Nexus room
+		}
+
 		if (client.getGameState() != GameState.LOGGED_IN || client.isMenuOpen()) {
 			return;
 		}
